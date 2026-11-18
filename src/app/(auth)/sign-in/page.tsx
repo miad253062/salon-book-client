@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-toastify";
 
 function SignIn() {
@@ -32,9 +33,11 @@ function SignIn() {
 
   
 
-  const handleGoogleSignIn = () => {
-    // TODO: handle Google sign-in
-  };
+  const handleGoogleSignIn = async() => {
+    await signIn.social({
+      provider: "google",
+    })
+  }
 
   return (
     <div className="flex flex-1 items-center justify-center p-4">
@@ -100,8 +103,9 @@ function SignIn() {
         <button
           type="button"
           onClick={handleGoogleSignIn}
-          className="w-full rounded-2xl border border-gray-200 px-3 py-2 font-medium text-[#2c3446] hover:bg-gray-50"
+          className="flex items-center gap-2 justify-center w-full rounded-2xl border border-gray-200 px-3 py-2 font-medium text-[#2c3446] hover:bg-gray-50"
         >
+          <FcGoogle className="text-xl"/>
           Continue with Google
         </button>
 

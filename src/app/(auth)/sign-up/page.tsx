@@ -1,10 +1,11 @@
 "use client";
 
-import { signUp } from "@/app/lib/auth-client";
+import { signIn, signUp } from "@/app/lib/auth-client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-toastify";
 
 function SignUp() {
@@ -86,8 +87,10 @@ function SignUp() {
     }
   };
 
-  const handleGoogleSignIn = () => {
-    // TODO: handle Google sign-in
+  const handleGoogleSignIn = async() => {
+    await signIn.social({
+      provider: "google",
+    })
   };
 
   return (
@@ -209,13 +212,14 @@ function SignUp() {
         <button
           type="button"
           onClick={handleGoogleSignIn}
-          className="w-full rounded-2xl border border-gray-200 px-3 py-2 font-medium text-[#2c3446] hover:bg-gray-50"
+          className="flex items-center gap-2 justify-center w-full rounded-2xl border border-gray-200 px-3 py-2 font-medium text-[#2c3446] hover:bg-gray-50"
         >
+          <FcGoogle className="text-xl"/>
           Continue with Google
         </button>
 
         <p className="mt-4 text-center text-sm text-[#2c3446]">
-          Already have an account?{" "}
+          Already have an account?
           <Link href="/sign-in" className="font-medium text-orange-600 hover:underline">
             Sign In
           </Link>
