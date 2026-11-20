@@ -3,8 +3,12 @@
 import { FormEvent, useState } from "react";
 import { FaCalendarAlt, FaClock, FaPen } from "react-icons/fa";
 import { useSession } from "../lib/auth-client";
+import { submitAppointmentDetails } from "../lib/api/servicesAPI";
+import { toast } from "react-toastify";
 
 export type AppointmentPayload = {
+    userId: string;
+    userEmail: string;
     serviceId?: string;
     serviceName: string;
     date: string;
@@ -12,11 +16,6 @@ export type AppointmentPayload = {
     notes: string;
 };
 
-// TODO: POST the appointment request to the API once the backend endpoint is ready.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const submitAppointment = async (_payload: AppointmentPayload) => {
-    
-};
 
 type AppointmentFormProps = {
     serviceId?: string;
@@ -32,25 +31,37 @@ function AppointmentForm({ serviceId, serviceName }: AppointmentFormProps) {
     const [time, setTime] = useState("");
     const [notes, setNotes] = useState("");
     const session = useSession();
-    console.log(session.data?.user);
+
+    console.log("Session data:", session.data);
     
+    const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
 
-
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
-
-        const payload: AppointmentPayload = {
-            serviceId,
-            serviceName,
-            date,
-            time,
-            notes,
-        };
-
-        console.log("Appointment request:", payload);
-        void submitAppointment(payload);
+    const payload: AppointmentPayload = {
+        userId: session.data?.user?.id as string,
+        userEmail: session.data?.user?.email as string,
+        serviceId,
+        serviceName,
+        date,
+        time,
+        notes,
     };
 
+    try {
+        const data = await submitAppointmentDetails(payload);
+
+        if (data.insertedId) {
+            toast.success("Appointment request submitted successfully!");
+            setDate("");
+            setTime("");
+            setNotes("");
+        } else {
+            toast.error(data.message || "Failed to submit appointment request. Please try again.");
+        }
+    } catch (error: any) {
+        toast.error(error.message || "Failed to submit appointment request. Please try again.");
+    }
+};
     return (
         <form onSubmit={handleSubmit} className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
             <h2 className="mb-4 text-base font-bold text-[#2c3446]">Book an Appointment</h2>
@@ -100,8 +111,10 @@ function AppointmentForm({ serviceId, serviceName }: AppointmentFormProps) {
             </div>
 
             <button
+
                 type="submit"
-                className="mt-5 w-full rounded-full bg-orange-600 px-5 py-3 text-sm font-semibold text-white transition duration-300 hover:bg-orange-700"
+                className="mt-5 w-full rounded-full bg-orange-600 px-5 py-3 text-sm font-semibold text-white transition duration-300 hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-gray-400"
+                disabled={session.data?.user?.role !== "customer"}
             >
                 Request Appointment
             </button>

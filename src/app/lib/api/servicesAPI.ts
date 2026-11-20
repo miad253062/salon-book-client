@@ -1,3 +1,4 @@
+import { AppointmentPayload } from "@/app/components/AppointmentForm";
 import { IService } from "@/types/alltype";
 
 export const getfeaturedServices = async () => {
@@ -49,4 +50,21 @@ export const getServiceById = async (id: string): Promise<IService | null> => {
     throw new Error("Failed to fetch service");
   }
   return (await response.json()) as IService;
+};
+
+
+export const submitAppointmentDetails = async (_payload: AppointmentPayload) => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/appointments`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(_payload),
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || "Failed to submit appointment");
+    }
+    return data;
 };
