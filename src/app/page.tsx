@@ -1,4 +1,5 @@
 import Banner from "./components/Banner";
+import CategorySection from "./components/CategorySection";
 import Featured from "./components/Featured";
 
 function Home(){
@@ -6,6 +7,7 @@ function Home(){
     <div className="p-2">
       <Banner />
       <Featured />
+      <CategorySection />
     </div>
   )
 }
