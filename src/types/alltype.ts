@@ -48,4 +48,11 @@ export type TAdminOverview = {
   }
 };
 
+export type UserOverview = {
+  totalAppointmentByCustomer: number,
+  pendingAppointment: number,
+  confirmedAppointment: number,
+  cancelledAppointment: number
+}
+
 export type UserInfo = TAppointment[];

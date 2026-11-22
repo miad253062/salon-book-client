@@ -1,25 +1,11 @@
 import StatCard from "@/app/components/dashboard/StatCard";
-import { getUserInfo } from "@/app/lib/api/customerAPI";
+import { getUserInfo, overviewOfUser } from "@/app/lib/api/customerAPI";
 import { auth } from "@/app/lib/auth";
 import { headers } from "next/headers";
-import { UserInfo } from "@/types/alltype";
+import { UserOverview } from "@/types/alltype";
 import { FaCheckCircle, FaClock, FaTimesCircle, FaCalendarAlt } from "react-icons/fa";
 
 
-
-const overview = (data: UserInfo) => {
-    const totalAppointments = data.length;
-    const pendingAppointments = data.filter((appointment) => appointment.status === "pending").length;
-    const confirmedAppointments = data.filter((appointment) => appointment.status === "confirmed").length;
-    const cancelledAppointments = data.filter((appointment) => appointment.status === "cancelled").length;
-
-    return {
-        totalAppointments,
-        pendingAppointments,
-        confirmedAppointments,
-        cancelledAppointments,
-    };
-}
 
 
 async function CustomerOverview() {
@@ -27,9 +13,12 @@ async function CustomerOverview() {
         headers: await headers(),
     });
 
+    const overview: UserOverview =await overviewOfUser(session?.user.email as string)
+    console.log('overview data', overview )
+
     const userId = session?.user?.id;
     const data = await getUserInfo(userId as string)
-    const {totalAppointments, pendingAppointments, confirmedAppointments, cancelledAppointments} = overview(data);
+    console.log('overview', data)
 
     console.log("User Info in CustomerOverview:", data)
     return (
@@ -42,10 +31,10 @@ async function CustomerOverview() {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                <StatCard label="Total Appointment Requests" value={totalAppointments} icon={FaCalendarAlt} tone="dark" />
-                <StatCard label="Pending Appointments" value={pendingAppointments} icon={FaClock} tone="amber" />
-                <StatCard label="Confirmed Appointments" value={confirmedAppointments} icon={FaCheckCircle} tone="green" />
-                <StatCard label="Cancelled Appointments" value={cancelledAppointments} icon={FaTimesCircle} tone="red" />
+                <StatCard label="Total Appointment Requests" value={overview.totalAppointmentByCustomer} icon={FaCalendarAlt} tone="dark" />
+                <StatCard label="Pending Appointments" value={overview.pendingAppointment} icon={FaClock} tone="amber" />
+                <StatCard label="Confirmed Appointments" value={overview.confirmedAppointment} icon={FaCheckCircle} tone="green" />
+                <StatCard label="Cancelled Appointments" value={overview.cancelledAppointment} icon={FaTimesCircle} tone="red" />
             </div>
         </div>
     );

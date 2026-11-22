@@ -91,3 +91,83 @@ export const deleteService = async (id: string) => {
   if (!res.ok) throw new Error(data.message || "Failed to delete service");
   return data;
 };
+
+export type TAdminAppointment = {
+  _id: string;
+  userId?: string;
+  userEmail?: string;
+  serviceId?: string;
+  serviceName?: string;
+  category?: string;
+  price?: number;
+  serviceImage?: string;
+  date: string;
+  time: string;
+  status: "pending" | "confirmed" | "canceled" | "completed";
+  paymentStatus?: "unpaid" | "paid";
+  requestDate?: string;
+  message?: string;
+  service?: {
+    _id?: string;
+    name?: string;
+    category?: string;
+    price?: number;
+    image?: string;
+  };
+};
+
+export const getAllAdminAppointments = async (): Promise<TAdminAppointment[]> => {
+  const res = await fetch(`${API_URL}/admin/appointments`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch appointments");
+  return res.json();
+};
+
+export const confirmAppointment = async (id: string) => {
+  const res = await fetch(`${API_URL}/admin/confirm_appointment/${id}`, {
+    method: "PATCH",
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Failed to confirm appointment");
+  return data;
+};
+
+export const cancelAdminAppointment = async (id: string) => {
+  const res = await fetch(`${API_URL}/appointments/${id}/cancel`, {
+    method: "PATCH",
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Failed to cancel appointment");
+  return data;
+};
+
+export type TAdminUser = {
+  _id: string;
+  id?: string;
+  name: string;
+  email: string;
+  role?: "customer" | "admin";
+  isBlocked?: boolean;
+  createdAt?: string;
+  appointmentsCount?: number;
+};
+
+export const getAllAdminUsers = async (): Promise<TAdminUser[]> => {
+  const res = await fetch(`${API_URL}/admin/allusers`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch users");
+  return res.json();
+};
+
+export const toggleUserBlockStatus = async (
+  userid: string,
+  isBlocked: boolean
+) => {
+  const res = await fetch(`${API_URL}/admin/users/${userid}/status`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ isBlocked }),
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Failed to update user status");
+  return data;
+};

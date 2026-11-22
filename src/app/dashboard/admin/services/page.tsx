@@ -24,7 +24,7 @@ const smallButton =
 
 function ManageServices() {
   const { data: session, isPending } = useSession();
-  const isAdmin = session?.user?.role !== "admin";
+  const isAdmin = session?.user?.role === "admin";
 
   const [services, setServices] = useState<TService[]>([]);
   const [loading, setLoading] = useState(true);
@@ -55,7 +55,20 @@ function ManageServices() {
   };
 
   useEffect(() => {
-    loadServices();
+    let active = true;
+    getAllAdminServices()
+      .then((data) => {
+        if (active) setServices(Array.isArray(data) ? data : []);
+      })
+      .catch(() => {
+        toast.error("Failed to load services");
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
   }, []);
 
   const resetForm = () => {

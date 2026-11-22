@@ -1,4 +1,4 @@
-import { UserInfo } from "@/types/alltype";
+import { UserInfo, UserOverview } from "@/types/alltype";
 
 export const getUserInfo = async (userId: string): Promise<UserInfo> => {
   try {
@@ -8,6 +8,20 @@ export const getUserInfo = async (userId: string): Promise<UserInfo> => {
     }
     const data = await response.json();
     return data as UserInfo;
+  } catch (error) {
+    console.error('Error fetching user info:', error);
+    throw error;
+  }
+}
+
+export const overviewOfUser = async(email: string): Promise<UserOverview> => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customer/overview/${email}`, { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error('Failed to fetch user info');
+    }
+    const data = await response.json();
+    return data as UserOverview;
   } catch (error) {
     console.error('Error fetching user info:', error);
     throw error;
