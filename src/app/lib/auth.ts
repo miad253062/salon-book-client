@@ -25,6 +25,12 @@ export const auth = betterAuth({
         input: false,
         defaultValue: "customer",
       },
+      isBlocked: {
+        type: "boolean",
+        required: true,
+        input: false,
+        defaultValue: false,
+      },
     },
   },
   database: mongodbAdapter(db, {

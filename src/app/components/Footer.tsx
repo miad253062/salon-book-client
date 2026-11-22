@@ -42,7 +42,6 @@ function Footer() {
     return (
         <footer className="mt-16 bg-[#2c3446] text-gray-300">
             <div className="container mx-auto grid grid-cols-1 gap-10 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
-                {/* Brand */}
                 <div>
                     <Link href={"/"} className="flex items-center gap-2 text-white">
                         <Image src={Logo} width={44} height={44} alt="SalonBook logo" />
@@ -68,7 +67,6 @@ function Footer() {
                     </div>
                 </div>
 
-                {/* Navigation */}
                 <div>
                     <h2 className={headingClass}>Important Links</h2>
                     <ul className="space-y-2.5 text-sm">
@@ -85,7 +83,6 @@ function Footer() {
                     </ul>
                 </div>
 
-                {/* Contact */}
                 <div>
                     <h2 className={headingClass}>Contact Us</h2>
                     <ul className="space-y-3 text-sm">
@@ -115,7 +112,6 @@ function Footer() {
                     </ul>
                 </div>
 
-                {/* Opening hours */}
                 <div>
                     <h2 className={headingClass}>Opening Hours</h2>
                     <ul className="space-y-2.5 text-sm">

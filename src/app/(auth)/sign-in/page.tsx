@@ -31,7 +31,6 @@ function SignIn() {
     }
   };
 
-  
 
   const handleGoogleSignIn = async() => {
     await signIn.social({

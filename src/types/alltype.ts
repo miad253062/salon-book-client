@@ -15,3 +15,25 @@ export interface IService {
   image: string | null;
   status: "active" | "inactive";
 }
+
+export type TAppointment = {
+  _id?: string;
+  id?: string;
+  userId?: string;
+  userEmail?: string;
+  serviceId?: string;
+  serviceName?: string;
+  category?: string;
+  service?: Partial<IService>;
+  date?: string;
+  time?: string;
+  price?: number;
+  notes?: string;
+  message?: string;
+  status: string;
+  paymentStatus?: string;
+  requestDate?: string;
+  createdAt?: string;
+};
+
+export type UserInfo = TAppointment[];

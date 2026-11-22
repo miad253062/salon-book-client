@@ -9,9 +9,12 @@ export const authClient = createAuthClient({
                 role: {
                     type: "string",
                 },
+                isBlocked: {
+                    type: "boolean",
+                },
             },
         }),
     ],
 });
 
-export const { signIn, signUp, signOut, useSession } = authClient;
+export const { signIn, signUp, signOut, updateUser,  useSession } = authClient;

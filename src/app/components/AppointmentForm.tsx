@@ -4,47 +4,48 @@ import { FormEvent, useState } from "react";
 import { FaCalendarAlt, FaClock, FaPen } from "react-icons/fa";
 import { useSession } from "../lib/auth-client";
 import { submitAppointmentDetails } from "../lib/api/servicesAPI";
+import { IService } from "@/types/alltype";
 import { toast } from "react-toastify";
 
 export type AppointmentPayload = {
     userId: string;
     userEmail: string;
-    serviceId?: string;
-    serviceName: string;
+    service: IService;
     date: string;
     time: string;
     notes: string;
+    status: "pending" | "confirmed" | "completed" | "canceled";
+    paymentStatus: "unpaid" | "paid";
 };
 
-
 type AppointmentFormProps = {
-    serviceId?: string;
-    serviceName: string;
+    service: IService;
 };
 
 const labelClass = "mb-1.5 flex items-center gap-1.5 text-sm font-medium text-[#2c3446]";
 const inputClass =
     "w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm text-[#2c3446] outline-none transition placeholder:text-gray-400 focus:border-orange-600 focus:ring-4 focus:ring-orange-100";
 
-function AppointmentForm({ serviceId, serviceName }: AppointmentFormProps) {
+function AppointmentForm({ service }: AppointmentFormProps) {
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
     const [notes, setNotes] = useState("");
     const session = useSession();
 
     console.log("Session data:", session.data);
-    
+
     const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     const payload: AppointmentPayload = {
         userId: session.data?.user?.id as string,
         userEmail: session.data?.user?.email as string,
-        serviceId,
-        serviceName,
+        service,
         date,
         time,
         notes,
+        status: "pending",
+        paymentStatus: "unpaid"
     };
 
     try {
@@ -58,8 +59,12 @@ function AppointmentForm({ serviceId, serviceName }: AppointmentFormProps) {
         } else {
             toast.error(data.message || "Failed to submit appointment request. Please try again.");
         }
-    } catch (error: any) {
-        toast.error(error.message || "Failed to submit appointment request. Please try again.");
+    } catch (error) {
+        const message =
+            error instanceof Error
+                ? error.message
+                : "Failed to submit appointment request. Please try again.";
+        toast.error(message);
     }
 };
     return (

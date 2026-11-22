@@ -74,17 +74,13 @@ async function ServiceDetailsPage({ params }: PageProps<"/services/[serviceId]">
                         )}
                     </div>
 
-                    {/* Details + booking */}
                     <div className="flex flex-col gap-4">
-                        {/* Service Name */}
                         <h1 className="text-3xl font-bold text-[#2c3446]">{service.name}</h1>
 
-                        {/* Category */}
                         <span className="flex w-fit items-center gap-1.5 rounded-full bg-orange-50 px-3 py-1 text-sm font-medium text-orange-600">
                             <FaTag /> {service.category}
                         </span>
 
-                        {/* Price + Estimated Duration */}
                         <div className="flex flex-wrap gap-4 text-sm">
                             <p className="text-[#2c3446]">
                                 <span className="text-gray-500">Price:</span>{" "}
@@ -102,7 +98,7 @@ async function ServiceDetailsPage({ params }: PageProps<"/services/[serviceId]">
                             <h2 className="mb-1.5 text-sm font-bold text-[#2c3446]">Description</h2>
                             <p className="text-sm leading-6 text-gray-500">{service.description}</p>
                         </div>
-                        <AppointmentForm serviceId={service._id} serviceName={service.name} />
+                        <AppointmentForm service={service} />
                     </div>
                 </div>
             </section>

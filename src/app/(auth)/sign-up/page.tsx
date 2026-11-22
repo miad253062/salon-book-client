@@ -71,6 +71,8 @@ function SignUp() {
       email: userData.email as string,
       password: userData.password as string,
       image: userData.image as string,
+      role: "customer",
+      isBlocked: false,
       callbackURL: "/sign-in",
     })
 

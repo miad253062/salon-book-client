@@ -88,7 +88,7 @@ function Navbar() {
                       </div>
 
                       <div className="mt-4 flex flex-col gap-2 text-center">
-                        <Link href={'/profile'} className="px-2 py-1 border rounded-full border-gray-200">Profile</Link>
+                        <Link href={'/dashboard/customer/profile'} className="px-2 py-1 border rounded-full border-gray-200">Profile</Link>
                         <Link href={'/dashboard'} className="px-2 py-1 border rounded-full border-gray-200">Go to Dashboard</Link>
                       </div>
 
