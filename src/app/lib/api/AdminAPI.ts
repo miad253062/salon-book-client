@@ -171,3 +171,26 @@ export const toggleUserBlockStatus = async (
   if (!res.ok) throw new Error(data.message || "Failed to update user status");
   return data;
 };
+
+export type TAdminTransaction = {
+  _id: string;
+  transactionId?: string;
+  sessionId: string;
+  appointmentId?: string;
+  customerId?: string;
+  customerName: string;
+  customerEmail: string;
+  service: string;
+  appointmentDate: string;
+  amount: number;
+  currency: string;
+  status: string;
+  date: string;
+  createdAt?: string;
+};
+
+export const getAllAdminTransactions = async (): Promise<TAdminTransaction[]> => {
+  const res = await fetch(`${API_URL}/admin/transactions`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch transactions");
+  return res.json();
+};
