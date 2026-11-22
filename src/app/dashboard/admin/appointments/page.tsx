@@ -184,12 +184,6 @@ function AdminAppointments() {
                         </p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-400">Requested</p>
-                        <p className="font-medium text-[#2c3446]">
-                          {appointment.requestDate || "N/A"}
-                        </p>
-                      </div>
-                      <div>
                         <p className="text-xs text-gray-400">Appointment ID</p>
                         <p className="truncate font-medium text-[#2c3446]">
                           {appointment._id}
