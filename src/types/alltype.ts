@@ -36,4 +36,16 @@ export type TAppointment = {
   createdAt?: string;
 };
 
+export type TAdminOverview = {
+  totalCustomer: number;
+  totalService: number;
+  totalAppointment: number;
+  totalPending: number;
+  totalConfirmed: number;
+  payment: {
+    success: number,
+    totalAmount: number
+  }
+};
+
 export type UserInfo = TAppointment[];
