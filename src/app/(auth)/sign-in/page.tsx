@@ -16,7 +16,6 @@ function SignIn() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const userInput = Object.fromEntries(formData.entries());
-    console.log("User Input:", userInput);
     const {data, error} = await signIn.email({
       email: userInput.email as string,
       password: userInput.password as string,

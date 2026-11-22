@@ -12,7 +12,6 @@ import {
 
 async function AdminOverview() {
     const overviewData: TAdminOverview = await OverviewAdmin()
-    console.log(overviewData)
     return (
         <div className="space-y-6">
             <div>

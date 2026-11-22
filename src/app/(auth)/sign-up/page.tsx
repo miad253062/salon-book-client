@@ -64,8 +64,6 @@ function SignUp() {
       image: imageUrl,
     };
 
-    console.log("Final User Data Object:", userData);
-
     const {data, error} = await signUp.email({
       name: userData.name as string,
       email: userData.email as string,
@@ -84,8 +82,6 @@ function SignUp() {
 
     if (error) {
       setErr(error.message as string);
-    } else {
-      console.log("User signed up successfully:", data);
     }
   };
 

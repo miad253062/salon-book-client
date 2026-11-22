@@ -1,26 +1,17 @@
 import StatCard from "@/app/components/dashboard/StatCard";
-import { getUserInfo, overviewOfUser } from "@/app/lib/api/customerAPI";
+import { overviewOfUser } from "@/app/lib/api/customerAPI";
 import { auth } from "@/app/lib/auth";
 import { headers } from "next/headers";
 import { UserOverview } from "@/types/alltype";
 import { FaCheckCircle, FaClock, FaTimesCircle, FaCalendarAlt } from "react-icons/fa";
-
-
-
 
 async function CustomerOverview() {
     const session = await auth.api.getSession({
         headers: await headers(),
     });
 
-    const overview: UserOverview =await overviewOfUser(session?.user.email as string)
-    console.log('overview data', overview )
+    const overview: UserOverview = await overviewOfUser(session?.user.email as string);
 
-    const userId = session?.user?.id;
-    const data = await getUserInfo(userId as string)
-    console.log('overview', data)
-
-    console.log("User Info in CustomerOverview:", data)
     return (
         <div className="space-y-6">
             <div>

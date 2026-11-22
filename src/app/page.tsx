@@ -1,6 +1,7 @@
 import Banner from "./components/Banner";
 import CategorySection from "./components/CategorySection";
 import Featured from "./components/Featured";
+import HowItWorks from "./components/HowItWorks";
 
 function Home(){
   return (
@@ -8,6 +9,7 @@ function Home(){
       <Banner />
       <Featured />
       <CategorySection />
+      <HowItWorks />
     </div>
   )
 }

@@ -32,8 +32,6 @@ function AppointmentForm({ service }: AppointmentFormProps) {
     const [notes, setNotes] = useState("");
     const session = useSession();
 
-    console.log("Session data:", session.data);
-
     const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
