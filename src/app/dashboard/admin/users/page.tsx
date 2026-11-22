@@ -9,7 +9,7 @@ import {
   getAllAdminUsers,
   TAdminUser,
   toggleUserBlockStatus,
-} from "@/app/lib/api/AdminAPI";
+} from "@/app/lib/api/adminAPI";
 
 const smallButton =
   "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition duration-200";

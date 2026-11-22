@@ -14,7 +14,7 @@ import {
   TService,
   updateService,
   uploadServiceImage,
-} from "@/app/lib/api/AdminAPI";
+} from "@/app/lib/api/adminAPI";
 
 const inputClass =
   "w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm text-[#2c3446] outline-none transition placeholder:text-gray-400 focus:border-orange-600 focus:ring-4 focus:ring-orange-100";

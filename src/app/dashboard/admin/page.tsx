@@ -1,5 +1,5 @@
 import StatCard from "@/app/components/dashboard/StatCard";
-import { OverviewAdmin } from "@/app/lib/api/AdminAPI";
+import { OverviewAdmin } from "@/app/lib/api/adminAPI";
 import { TAdminOverview } from "@/types/alltype";
 import {
     FaCalendarAlt,

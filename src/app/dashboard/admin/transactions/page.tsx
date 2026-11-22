@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import {
   getAllAdminTransactions,
   TAdminTransaction,
-} from "@/app/lib/api/AdminAPI";
+} from "@/app/lib/api/adminAPI";
 
 function Transactions() {
   const { data: session, isPending } = useSession();

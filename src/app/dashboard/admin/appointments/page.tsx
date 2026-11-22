@@ -12,7 +12,7 @@ import {
   confirmAppointment,
   getAllAdminAppointments,
   TAdminAppointment,
-} from "@/app/lib/api/AdminAPI";
+} from "@/app/lib/api/adminAPI";
 
 const buttonBase =
   "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition duration-200";
