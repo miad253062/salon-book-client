@@ -1,37 +1,31 @@
 import { authClient } from "@/app/lib/auth-client";
 
 export const getAuthHeaders = async () => {
-    let token: string | undefined;
+  let token: string | undefined;
 
-    if (typeof window === "undefined") {
-        const { headers } = await import("next/headers");
-        const h = await headers();
-        const origin =
-            process.env.BETTER_AUTH_URL ||
-            `${h.get("x-forwarded-proto") ?? "http"}://${h.get("host")}`;
+  if (typeof window === "undefined") {
+    const { headers } = await import("next/headers");
+    const { auth } = await import("@/app/lib/auth");
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
 
-        const res = await fetch(`${origin}/api/auth/get-session`, {
-            headers: { cookie: h.get("cookie") ?? "" },
-            cache: "no-store",
-        });
-        const data = await res.json().catch(() => null);
-
-        if (data?.user && data?.session?.token) {
-            token = data.session.token;
-        }
-    } else {
-        const { data } = await authClient.getSession();
-        if (data?.user && data?.session?.token) {
-            token = data.session.token;
-        }
+    if (session?.user && session?.session?.token) {
+      token = session.session.token;
     }
-
-    if (!token) {
-        throw new Error("Unauthorized: Please sign in first.");
+  } else {
+    const { data } = await authClient.getSession();
+    if (data?.user && data?.session?.token) {
+      token = data.session.token;
     }
+  }
 
-    return {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-    };
+  if (!token) {
+    throw new Error("Unauthorized: Please sign in first.");
+  }
+
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
 };
