@@ -16,25 +16,35 @@ function SignIn() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const userInput = Object.fromEntries(formData.entries());
-    const {data, error} = await signIn.email({
-      email: userInput.email as string,
-      password: userInput.password as string,
-    })
-    if (data){
-      toast.success("Sign in successful!");
-      router.push("/");
-    } 
 
-    if (error) {
-      toast.error(`Sign in failed: ${error.message}`);
+    try {
+      const {data, error} = await signIn.email({
+        email: userInput.email as string,
+        password: userInput.password as string,
+      })
+
+      if (data){
+        toast.success("Sign in successful!");
+        router.push("/");
+      }
+
+      if (error) {
+        toast.error(error.message as string);
+      }
+    } catch {
+      toast.error("Something went wrong. Please try again.");
     }
   };
 
 
   const handleGoogleSignIn = async() => {
-    await signIn.social({
-      provider: "google",
-    })
+    try {
+      await signIn.social({
+        provider: "google",
+      })
+    } catch {
+      toast.error("Google sign in failed. Please try again.");
+    }
   }
 
   return (

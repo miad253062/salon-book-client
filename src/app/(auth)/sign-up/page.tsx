@@ -4,7 +4,7 @@ import { signIn, signUp } from "@/app/lib/auth-client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
+import { FaCheck, FaEye, FaEyeSlash, FaTimes, FaUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-toastify";
 
@@ -13,9 +13,14 @@ function SignUp() {
   const [preview, setPreview] = useState<string | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
   const [isUploading, setIsUploading] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
+  const [password, setPassword] = useState("");
   const router = useRouter();
 
+  const passwordRules = [
+    { id: "length", label: "Minimum 6 characters", met: password.length >= 6 },
+    { id: "uppercase", label: "One uppercase letter", met: /[A-Z]/.test(password) },
+    { id: "lowercase", label: "One lowercase letter", met: /[a-z]/.test(password) },
+  ];
 
   useEffect(() => {
     return () => {
@@ -64,31 +69,43 @@ function SignUp() {
       image: imageUrl,
     };
 
-    const {data, error} = await signUp.email({
-      name: userData.name as string,
-      email: userData.email as string,
-      password: userData.password as string,
-      image: userData.image as string,
-      role: "customer",
-      isBlocked: false,
-      callbackURL: "/sign-in",
-    })
+    if (passwordRules.some((rule) => !rule.met)) {
+      toast.error("Password must be at least 6 characters and include one uppercase and one lowercase letter.");
+      return;
+    }
 
-    if( data && error === null){
-      toast.success("Sign up successful! Please sign in.");
-      router.push("/sign-in");
+    try {
+      const {data, error} = await signUp.email({
+        name: userData.name as string,
+        email: userData.email as string,
+        password: userData.password as string,
+        image: userData.image as string,
+        role: "customer",
+        isBlocked: false,
+        callbackURL: "/sign-in",
+      })
 
-    };
+      if( data && error === null){
+        toast.success("Sign up successful! Please sign in.");
+        router.push("/sign-in");
+      };
 
-    if (error) {
-      setErr(error.message as string);
+      if (error) {
+        toast.error(error.message as string);
+      }
+    } catch {
+      toast.error("Something went wrong. Please try again.");
     }
   };
 
   const handleGoogleSignIn = async() => {
-    await signIn.social({
-      provider: "google",
-    })
+    try {
+      await signIn.social({
+        provider: "google",
+      })
+    } catch {
+      toast.error("Google sign in failed. Please try again.");
+    }
   };
 
   return (
@@ -176,6 +193,9 @@ function SignUp() {
                 name="password"
                 placeholder="Enter your password"
                 required
+                autoComplete="new-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full rounded-xl border border-gray-200 px-3 py-2 pr-10 text-base text-[#2c3446] placeholder:text-gray-400 focus:border-orange-600 focus:outline-none"
               />
               <button
@@ -187,10 +207,27 @@ function SignUp() {
                 {showPassword ? <FaEyeSlash size={16} /> : <FaEye size={16} />}
               </button>
             </div>
+
+            <ul className="mt-2 grid gap-1">
+              {passwordRules.map((rule) => (
+                <li
+                  key={rule.id}
+                  className={`flex items-center gap-2 text-xs ${
+                    rule.met ? "text-green-600" : "text-gray-400"
+                  }`}
+                >
+                  <span
+                    className={`flex h-4 w-4 items-center justify-center rounded-full ${
+                      rule.met ? "bg-green-100 text-green-600" : "bg-gray-100 text-gray-400"
+                    }`}
+                  >
+                    {rule.met ? <FaCheck size={9} /> : <FaTimes size={9} />}
+                  </span>
+                  {rule.label}
+                </li>
+              ))}
+            </ul>
           </div>
-          <span className="text-sm text-red-500">{
-            err && err
-            }</span>
 
           <button
             type="submit"
