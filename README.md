@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SalonBook — Salon Appointment Booking Platform (Client)
 
-## Getting Started
+SalonBook is a role-based salon appointment booking web application where customers can explore salon services, search and filter offerings, submit appointment requests, and pay for confirmed bookings online through Stripe. Salon administrators can create and manage services, confirm or cancel appointment requests, manage registered users, and monitor payment transactions.
 
-First, run the development server:
+## Live Website & Repository Links
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Live Website:** [https://salon-book-client-pjan.vercel.app/]
+- **Client GitHub Repository:** [https://github.com/miad253062/salon-book-client](https://github.com/miad253062/salon-book-client)
+- **Server GitHub Repository:** [https://github.com/miad253062/salon-book-server](https://github.com/miad253062/salon-book-server)
+
+## Important Features
+
+### Public & Authentication
+- **Role-Based Authentication:** Supports Email/Password sign-up and sign-in alongside Google OAuth powered by Better Auth.
+- **Password Validation:** Enforces a minimum of 6 characters with at least one uppercase and one lowercase letter during registration.
+- **Home & Browse Services:** Displays featured active services, service categories, search by service name, category filtering, and sorting by price without requiring login.
+
+### Customer Features
+- **Protected Service Details & Booking:** Authenticated customers can view service details (`/services/[id]`) and request appointments for active services while preventing duplicate bookings for the same date and time slot.
+- **Customer Dashboard:** Provides an overview of total, pending, confirmed, and cancelled appointments along with complete booking history.
+- **Appointment & Payment Management:** Customers can cancel pending appointment requests, pay for confirmed appointments via Stripe Checkout, and update their profile information.
+
+### Admin Features
+- **Admin Dashboard Overview:** Displays total registered customers, active services, total appointments, pending and confirmed counts, and successful payment summaries.
+- **Service Management:** Add, update, delete, and activate/deactivate salon services with direct image upload via ImgBB.
+- **Appointment & User Management:** Confirm pending appointments, cancel pending or confirmed appointments, and block or unblock customer accounts.
+- **Transaction History:** Monitor completed Stripe payment records and session references.
+
+## Technology Stack
+
+- **Framework:** Next.js (App Router)
+- **Language:** TypeScript
+- **Authentication:** Better Auth (Email/Password & Google OAuth)
+- **Payments:** Stripe Checkout
+- **Image Hosting:** ImgBB API
+
+## Installation Instructions
+
+1. Clone the client repository:
+   ```bash
+   git clone https://github.com/miad253062/salon-book-client.git
+   cd salon-book-client
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env` or `.env.local` file in the root directory and add the required environment variables listed below.
+
+## Required Environment Variables
+
+Create an environment file in the root directory containing only the variable names below (never commit actual secret keys to GitHub):
+
+```env
+NEXT_PUBLIC_API_URL=
+NEXT_PUBLIC_IMGBB_API_KEY=
+BETTER_AUTH_URL=
+BETTER_AUTH_SECRET=
+MONGODB_URI=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+STRIPE_SECRET_KEY=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How to Run the Project Locally
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Ensure the Express backend server is running locally (default: `http://localhost:8000`).
+2. Start the Next.js development server:
+   ```bash
+   npm run dev
+   ```
+3. Open `http://localhost:3000` in your browser.
