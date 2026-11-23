@@ -1,3 +1,5 @@
+import { getAuthHeaders } from "@/app/lib/core/server";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export type TService = {
@@ -12,12 +14,18 @@ export type TService = {
 };
 
 export const OverviewAdmin = async () => {
-  const res = await fetch(`${API_URL}/admin/overview`, { cache: "no-store" });
+  const res = await fetch(`${API_URL}/admin/overview`, {
+    cache: "no-store",
+    headers: await getAuthHeaders(),
+  });
   return res.json();
 };
 
 export const getAllAdminServices = async (): Promise<TService[]> => {
-  const res = await fetch(`${API_URL}/admin/services`, { cache: "no-store" });
+  const res = await fetch(`${API_URL}/admin/services`, {
+    cache: "no-store",
+    headers: await getAuthHeaders(),
+  });
   if (!res.ok) throw new Error("Failed to fetch services");
   return res.json();
 };
@@ -58,7 +66,7 @@ export const addService = async (payload: {
 }) => {
   const res = await fetch(`${API_URL}/service/add`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: await getAuthHeaders(),
     body: JSON.stringify(payload),
   });
 
@@ -73,7 +81,7 @@ export const updateService = async (
 ) => {
   const res = await fetch(`${API_URL}/service/update/${id}`, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json" },
+    headers: await getAuthHeaders(),
     body: JSON.stringify(payload),
   });
 
@@ -85,6 +93,7 @@ export const updateService = async (
 export const deleteService = async (id: string) => {
   const res = await fetch(`${API_URL}/service/delete/${id}`, {
     method: "DELETE",
+    headers: await getAuthHeaders(),
   });
 
   const data = await res.json();
@@ -117,7 +126,10 @@ export type TAdminAppointment = {
 };
 
 export const getAllAdminAppointments = async (): Promise<TAdminAppointment[]> => {
-  const res = await fetch(`${API_URL}/admin/appointments`, { cache: "no-store" });
+  const res = await fetch(`${API_URL}/admin/appointments`, {
+    cache: "no-store",
+    headers: await getAuthHeaders(),
+  });
   if (!res.ok) throw new Error("Failed to fetch appointments");
   return res.json();
 };
@@ -125,6 +137,7 @@ export const getAllAdminAppointments = async (): Promise<TAdminAppointment[]> =>
 export const confirmAppointment = async (id: string) => {
   const res = await fetch(`${API_URL}/admin/confirm_appointment/${id}`, {
     method: "PATCH",
+    headers: await getAuthHeaders(),
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || "Failed to confirm appointment");
@@ -134,6 +147,7 @@ export const confirmAppointment = async (id: string) => {
 export const cancelAdminAppointment = async (id: string) => {
   const res = await fetch(`${API_URL}/appointments/${id}/cancel`, {
     method: "PATCH",
+    headers: await getAuthHeaders(),
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || "Failed to cancel appointment");
@@ -152,7 +166,10 @@ export type TAdminUser = {
 };
 
 export const getAllAdminUsers = async (): Promise<TAdminUser[]> => {
-  const res = await fetch(`${API_URL}/admin/allusers`, { cache: "no-store" });
+  const res = await fetch(`${API_URL}/admin/allusers`, {
+    cache: "no-store",
+    headers: await getAuthHeaders(),
+  });
   if (!res.ok) throw new Error("Failed to fetch users");
   return res.json();
 };
@@ -163,7 +180,7 @@ export const toggleUserBlockStatus = async (
 ) => {
   const res = await fetch(`${API_URL}/admin/users/${userid}/status`, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json" },
+    headers: await getAuthHeaders(),
     body: JSON.stringify({ isBlocked }),
   });
 
@@ -190,7 +207,10 @@ export type TAdminTransaction = {
 };
 
 export const getAllAdminTransactions = async (): Promise<TAdminTransaction[]> => {
-  const res = await fetch(`${API_URL}/admin/transactions`, { cache: "no-store" });
+  const res = await fetch(`${API_URL}/admin/transactions`, {
+    cache: "no-store",
+    headers: await getAuthHeaders(),
+  });
   if (!res.ok) throw new Error("Failed to fetch transactions");
   return res.json();
 };

@@ -1,8 +1,12 @@
+import { getAuthHeaders } from "@/app/lib/core/server";
 import { UserInfo, UserOverview } from "@/types/alltype";
 
 export const getUserInfo = async (userId: string): Promise<UserInfo> => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${userId}/appointment`, { cache: "no-store" });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${userId}/appointment`, {
+      cache: "no-store",
+      headers: await getAuthHeaders(),
+    });
     if (!response.ok) {
       throw new Error('Failed to fetch user info');
     }
@@ -16,7 +20,10 @@ export const getUserInfo = async (userId: string): Promise<UserInfo> => {
 
 export const overviewOfUser = async(email: string): Promise<UserOverview> => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customer/overview/${email}`, { cache: "no-store" });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customer/overview/${email}`, {
+      cache: "no-store",
+      headers: await getAuthHeaders(),
+    });
     if (!response.ok) {
       throw new Error('Failed to fetch user info');
     }
@@ -32,9 +39,7 @@ export const cancelAppointment = async (appointmentId: string): Promise<{ succes
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/appointments/${appointmentId}/cancel`, {
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: await getAuthHeaders(),
     });
 
     if (!response.ok) {
@@ -54,9 +59,7 @@ export const markAppointmentPaid = async (appointmentId?: string) => {
 
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/appointments/${appointmentId}/payment`, {
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: await getAuthHeaders(),
     cache: 'no-store',
   });
 
@@ -96,7 +99,7 @@ export const getTransactionBySessionId = async (sessionId: string): Promise<Save
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/transactions/session/${encodeURIComponent(sessionId)}`,
-      { cache: 'no-store' }
+      { cache: 'no-store', headers: await getAuthHeaders() }
     );
 
     if (!response.ok) return null;
@@ -112,9 +115,7 @@ export const getTransactionBySessionId = async (sessionId: string): Promise<Save
 export const createTransaction = async (transaction: NewTransaction) => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: await getAuthHeaders(),
     body: JSON.stringify(transaction),
     cache: 'no-store',
   });

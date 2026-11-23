@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import StatusBadge from "@/app/components/dashboard/StatusBadge";
 import { FaCalendarAlt, FaClock, FaCreditCard, FaDollarSign, FaEye, FaTimes } from "react-icons/fa";
 import { cancelAppointment, getUserInfo } from "@/app/lib/api/customerAPI";
+import { getAuthHeaders } from "@/app/lib/core/server";
 import { useSession } from "@/app/lib/auth-client";
 import { TAppointment } from "@/types/alltype";
 import { toast } from "react-toastify";
@@ -82,7 +83,7 @@ function MyAppointments() {
     try {
       const response = await fetch("/api/checkout_sessions", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: await getAuthHeaders(),
         body: JSON.stringify({
           amount,
           appointmentId,

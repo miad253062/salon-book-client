@@ -1,4 +1,5 @@
 import { AppointmentPayload } from "@/app/components/AppointmentForm";
+import { getAuthHeaders } from "@/app/lib/core/server";
 import { IService } from "@/types/alltype";
 
 export const getfeaturedServices = async () => {
@@ -44,7 +45,10 @@ export const getAllServices = async () => {
 }
 
 export const getServiceById = async (id: string): Promise<IService | null> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/services/${encodeURIComponent(id)}`, { cache: "no-store" });
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/services/${encodeURIComponent(id)}`, {
+    cache: "no-store",
+    headers: await getAuthHeaders(),
+  });
   if (response.status === 404) return null;
   if (!response.ok) {
     throw new Error("Failed to fetch service");
@@ -56,9 +60,7 @@ export const getServiceById = async (id: string): Promise<IService | null> => {
 export const submitAppointmentDetails = async (_payload: AppointmentPayload) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/appointments`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
+        headers: await getAuthHeaders(),
         body: JSON.stringify(_payload),
     });
     const data = await response.json();
